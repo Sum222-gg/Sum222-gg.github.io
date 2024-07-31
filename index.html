@@ -19,11 +19,44 @@
 </head>
 <body>
     <h1>３連コイントス</h1>
-    <p>「表」か「裏」を選択しよう。3回連続で当ててプロギャンブラーになろう。</p>
+    <p>「表」か「裏」を選択して、3回連続で当てよう</p>
     <button id="heads" class="button">表</button>
     <button id="tails" class="button">裏</button>
     <p id="result">結果: </p>
 
-    <script src="game.js"></script>
+    <script>
+        let streak = 0;
+
+        const resultDisplay = document.getElementById('result');
+        const headsButton = document.getElementById('heads');
+        const tailsButton = document.getElementById('tails');
+
+        const COIN_SIDES = ['表', '裏'];
+
+        function coinToss() {
+            return Math.floor(Math.random() * 2);
+        }
+
+        function checkGuess(playerGuess) {
+            const result = coinToss();
+            const resultText = COIN_SIDES[result];
+
+            if (playerGuess === result) {
+                streak++;
+                resultDisplay.textContent = `結果: ${resultText} - あたり！ 現在の連続当たり回数: ${streak}`;
+            } else {
+                streak = 0;
+                resultDisplay.textContent = `結果: ${resultText} - はずれ。連続当たり回数: ${streak}`;
+            }
+
+            if (streak === 3) {
+                alert("YOU WIN");
+                streak = 0; 
+            }
+        }
+
+        headsButton.addEventListener('click', () => checkGuess(0));
+        tailsButton.addEventListener('click', () => checkGuess(1));
+    </script>
 </body>
 </html>
